@@ -1,0 +1,36 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        environment:
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_USERNAME=postgres
+            - DB_PASSWORD=1234
+            - DB_NAME=db-name
+            - JWT_SECRET=FaaRHalqyd9mQ+Fie3AhqrigJub3OJimeXrIpPR0LE0=
+            - JWT_EXPIRATION=1d
+            - CORS_ORIGIN=http://localhost:3000
+            - DB_SYNCHRONIZE=true
+            - DB_LOGGING=true
+            - ADMIN_EMAIL=admin@gmail.com
+            - ADMIN_PASSWORD=admin123
+        depends_on:
+            - db
+
+    db:
+        image: postgres:15
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 1234
+            POSTGRES_DB: db-name
+        ports:
+            - "5432:5432"
+        volumes:
+            - db_data:/var/lib/postgresql/data
+
+volumes:
+    db_data:
