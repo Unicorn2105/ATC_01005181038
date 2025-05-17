@@ -50,7 +50,7 @@ This is the backend for the Booking Website, built with Node.js, Express, and Po
 ### Clone the repository
 
 ```bash
-git clone https://github.com/Unicorn2105/Booking-Website.git
+git clone https://github.com/Unicorn2105/ATC_01005181038.git
 cd Booking-Website/backend
 ```
 
