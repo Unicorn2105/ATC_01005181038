@@ -9,32 +9,41 @@ import EventRepository from "../../repository/eventRepository";
 
 const createBooking: RequestHandler = asyncHandler(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const { eventId, ticketCount } = req.body;
+        const { eventId } = req.body;
         const userId = req.user?.id;
-        const event = await EventRepository.findOne({
-            where: { id: eventId },
-        });
-        if (
-            !event ||
-            event.capacity === undefined ||
-            event.capacity - event.bookedCount < ticketCount
-        ) {
-            next(new RequestError("Not enough tickets available", 400));
-            return;
+
+        if (!eventId || !userId) {
+            return next(new RequestError("Missing event ID or user ID", 400));
         }
-        const booking = await BookingRepository.create({
+
+        const event = await EventRepository.findOne({ where: { id: eventId } });
+
+        if (!event) {
+            return next(new RequestError("Event not found", 404));
+        }
+
+        const existingBooking = await BookingRepository.findOne({
+            where: {
+                user: { id: userId },
+                event: { id: eventId },
+            },
+        });
+
+        if (existingBooking) {
+            return next(
+                new RequestError("You have already booked this event", 400)
+            );
+        }
+
+        const booking = BookingRepository.create({
             user: { id: userId },
             event: { id: eventId },
-            ticketCount,
             bookedAt: new Date(),
             status: "Booked",
         });
+
         await BookingRepository.save(booking);
-        await EventRepository.increment(
-            { id: eventId },
-            "bookedCount",
-            ticketCount
-        );
+
         SuccessResponse(res, {
             data: booking,
             message: "Booking created successfully",
@@ -69,12 +78,6 @@ const cancelBooking: RequestHandler = asyncHandler(
             return;
         }
         await BookingRepository.remove(booking);
-        await EventRepository.decrement(
-            { id: booking.event.id },
-            "bookedCount",
-            booking.ticketCount
-        );
-
         SuccessResponse(res, {
             message: "Booking cancelled successfully",
         });

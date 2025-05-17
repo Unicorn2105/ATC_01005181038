@@ -12,10 +12,8 @@ const seedEvents = async () => {
             eventDate: new Date("2025-06-10"),
             venue: "Cairo Art Gallery",
             price: 50,
-            imageUrl: "uploads/art1.jpg",
+            imageUrl: "uploads/art2.jpg",
             isActive: true,
-            capacity: 100,
-            bookedCount: 0,
         },
         {
             name: "Visual Arts Showcase",
@@ -26,8 +24,6 @@ const seedEvents = async () => {
             price: 40,
             imageUrl: "uploads/art2.jpg",
             isActive: true,
-            capacity: 80,
-            bookedCount: 0,
         },
         {
             name: "Drone Racing Championship",
@@ -38,8 +34,6 @@ const seedEvents = async () => {
             price: 100,
             imageUrl: "uploads/drone.jpg",
             isActive: true,
-            capacity: 150,
-            bookedCount: 0,
         },
         {
             name: "Frontend Dev Conference",
@@ -50,8 +44,6 @@ const seedEvents = async () => {
             price: 120,
             imageUrl: "uploads/frontend.jpg",
             isActive: true,
-            capacity: 200,
-            bookedCount: 0,
         },
         {
             name: "Health & Wellness Fair",
@@ -62,8 +54,6 @@ const seedEvents = async () => {
             price: 60,
             imageUrl: "uploads/health.jpg",
             isActive: true,
-            capacity: 200,
-            bookedCount: 0,
         },
         {
             name: "Healthy Living Expo",
@@ -75,8 +65,6 @@ const seedEvents = async () => {
             price: 70,
             imageUrl: "uploads/health2.png",
             isActive: true,
-            capacity: 180,
-            bookedCount: 0,
         },
         {
             name: "AI Research Journal Forum",
@@ -87,8 +75,6 @@ const seedEvents = async () => {
             price: 80,
             imageUrl: "uploads/journal.jpg",
             isActive: true,
-            capacity: 90,
-            bookedCount: 0,
         },
         {
             name: "Scientific Publishing Workshop",
@@ -100,8 +86,6 @@ const seedEvents = async () => {
             price: 65,
             imageUrl: "uploads/journal2.jpeg",
             isActive: true,
-            capacity: 75,
-            bookedCount: 0,
         },
         {
             name: "Software Testing Bootcamp",
@@ -112,8 +96,6 @@ const seedEvents = async () => {
             price: 90,
             imageUrl: "uploads/testing.jpeg",
             isActive: true,
-            capacity: 100,
-            bookedCount: 0,
         },
     ];
     await EventRepository.insert(events);

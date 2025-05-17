@@ -30,12 +30,6 @@ export class Event {
     @Column({ default: true })
     isActive: boolean;
 
-    @Column({ default: 0 })
-    capacity: number;
-
-    @Column({ default: 0 })
-    bookedCount: number;
-
     @OneToMany(() => Booking, (booking) => booking.event, {
         onDelete: "CASCADE",
     })

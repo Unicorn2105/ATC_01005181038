@@ -12,7 +12,7 @@ import eventRouter from "./modules/event/controller";
 import UserRepository from "./repository/userRepository";
 import bcrypt from "bcrypt";
 import bookingRouter from "./modules/booking/controller";
-
+import path from "path";
 declare global {
     namespace Express {
         interface Request {
@@ -62,7 +62,6 @@ export const bootstrap = async (app: Express) => {
             app.use("/api/auth", authRouter);
             app.use("/api/event", eventRouter);
             app.use("/api/booking", bookingRouter);
-
             app.use(globalErrorHandling);
         })
         .catch((err) => {

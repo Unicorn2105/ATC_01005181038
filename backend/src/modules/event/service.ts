@@ -6,7 +6,6 @@ import {
 import EventRepository from "../../repository/eventRepository";
 import BookingRepository from "../../repository/bookingRepository";
 import { SuccessResponse } from "../../utils/responses/responses";
-import upload from "../../utils/fileUploading/multerUpload";
 
 const getAllEvents: RequestHandler = asyncHandler(
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -83,7 +82,6 @@ const getEventById: RequestHandler = asyncHandler(
             });
             isBooked = !!booking;
         }
-
         SuccessResponse(res, {
             data: { ...event, isBooked },
             message: "Event fetched successfully",
