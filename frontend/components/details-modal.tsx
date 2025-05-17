@@ -12,6 +12,7 @@ import {
     Divider,
 } from "@heroui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
     BsCalendarEvent,
     BsGeoAlt,
@@ -36,7 +37,7 @@ export default function ModelDetails({
               day: "numeric",
           })
         : "";
-
+    const router = useRouter();
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="2xl">
             <ModalContent>
@@ -92,7 +93,7 @@ export default function ModelDetails({
                                     <BsCurrencyDollar className="text-violet-600 text-lg" />
                                     <div>
                                         <p className="text-gray-900 font-medium">
-                                            ${event?.price}
+                                            {event?.price}
                                         </p>
                                     </div>
                                 </div>
@@ -123,6 +124,7 @@ export default function ModelDetails({
                 </ModalBody>
                 <ModalFooter>
                     <Button
+                        onPress={() => router.push(`/update-event/${event.id}`)}
                         variant="solid"
                         className="w-full sm:w-auto bg-violet-800 text-white hover:bg-violet-700"
                     >

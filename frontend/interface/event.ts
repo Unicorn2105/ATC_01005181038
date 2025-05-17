@@ -7,7 +7,6 @@ export interface EventMap {
     venue: string;
     price: number;
     imageUrl: string;
-    isActive: boolean;
     isBooked: boolean;
 }
 export interface EventFormValues {
@@ -19,5 +18,13 @@ export interface EventFormValues {
     venue: string;
     price: number;
     imageUrl: string;
-    isActive: boolean;
+}
+export interface AddEvent {
+    name: string;
+    description: string;
+    category: string;
+    eventDate: string;
+    venue: string;
+    price: number;
+    imageUrl: string;
 }

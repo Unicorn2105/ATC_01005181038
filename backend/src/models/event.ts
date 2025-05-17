@@ -27,9 +27,6 @@ export class Event {
     @Column({ nullable: true })
     imageUrl: string;
 
-    @Column({ default: true })
-    isActive: boolean;
-
     @OneToMany(() => Booking, (booking) => booking.event, {
         onDelete: "CASCADE",
     })

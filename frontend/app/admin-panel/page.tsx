@@ -37,6 +37,7 @@ import { EventMap } from "@/interface/event";
 import DeleteModal from "@/components/delete-modal";
 import ModelDetails from "@/components/details-modal";
 import { useRouter } from "next/navigation";
+import ProtectedRoute from "@/components/protected-route";
 
 export const columns = [
     { name: "NAME", uid: "name" },
@@ -196,209 +197,216 @@ export default function AdminPanel() {
     const totalItems = data?.data?.result?.total || 0;
 
     return (
-        <div className="px-4 py-6 md:px-6 lg:px-28">
-            {showFeedback && (
-                <div
-                    className={`mb-4 p-4 rounded-md flex items-center justify-between ${
-                        feedbackType === "success"
-                            ? "bg-green-50 text-green-800"
-                            : "bg-red-50 text-red-800"
-                    }`}
-                >
-                    <div className="flex items-center">
-                        {feedbackType === "success" ? (
-                            <BsCheckCircleFill className="mr-2 text-green-500" />
-                        ) : (
-                            <BsXCircleFill className="mr-2 text-red-500" />
-                        )}
-                        {feedbackMessage}
-                    </div>
-                    <button
-                        onClick={() => setShowFeedback(false)}
-                        className="text-gray-500 hover:text-gray-700"
+        <ProtectedRoute requiredRole="admin">
+            <div className="px-4 py-6 md:px-6 lg:px-28">
+                {showFeedback && (
+                    <div
+                        className={`mb-4 p-4 rounded-md flex items-center justify-between ${
+                            feedbackType === "success"
+                                ? "bg-green-50 text-green-800"
+                                : "bg-red-50 text-red-800"
+                        }`}
                     >
-                        ×
-                    </button>
-                </div>
-            )}
-
-            <Card className="shadow-lg rounded-lg overflow-hidden">
-                <CardHeader className="light:bg-gray-50 border-b light:border-gray-200 dark:border-gray-800">
-                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                        <h2 className="text-2xl font-bold light:text-gray-800 dark:text-gray-100">
-                            Event Management
-                            <span className="text-sm font-normal text-gray-500 ml-2">
-                                ({totalItems} events)
-                            </span>
-                        </h2>
-                        <div className="flex flex-col sm:flex-row gap-3 justify-end w-full md:w-auto">
-                            <CategoryDropdown
-                                selectedCategory={category}
-                                onCategoryChange={handleCategoryChange}
-                            />
-                            <SortDropdown
-                                sort={sort}
-                                order={order}
-                                onSortChange={handleSortChange}
-                            />
-                            <Button color="success">Add New Event</Button>
+                        <div className="flex items-center">
+                            {feedbackType === "success" ? (
+                                <BsCheckCircleFill className="mr-2 text-green-500" />
+                            ) : (
+                                <BsXCircleFill className="mr-2 text-red-500" />
+                            )}
+                            {feedbackMessage}
                         </div>
+                        <button
+                            onClick={() => setShowFeedback(false)}
+                            className="text-gray-500 hover:text-gray-700"
+                        >
+                            ×
+                        </button>
                     </div>
-                </CardHeader>
-                <CardBody className="p-0">
-                    <Table aria-label="Events table" className="min-w-full">
-                        <TableHeader>
-                            {columns.map((column) => (
-                                <TableColumn
-                                    key={column.uid}
-                                    className="light:bg-gray-100 text-gray-800 dark:text-white font-medium px-6 py-3"
+                )}
+
+                <Card className="shadow-lg rounded-lg overflow-hidden">
+                    <CardHeader className="light:bg-gray-50 border-b light:border-gray-200 dark:border-gray-800">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                            <h2 className="text-2xl font-bold light:text-gray-800 dark:text-gray-100">
+                                Event Management
+                                <span className="text-sm font-normal text-gray-500 ml-2">
+                                    ({totalItems} events)
+                                </span>
+                            </h2>
+                            <div className="flex flex-col sm:flex-row gap-3 justify-end w-full md:w-auto">
+                                <CategoryDropdown
+                                    selectedCategory={category}
+                                    onCategoryChange={handleCategoryChange}
+                                />
+                                <SortDropdown
+                                    sort={sort}
+                                    order={order}
+                                    onSortChange={handleSortChange}
+                                />
+                                <Button
+                                    onPress={() => router.push("/add-event")}
+                                    color="success"
                                 >
-                                    {column.name}
-                                </TableColumn>
-                            ))}
-                        </TableHeader>
-                        <TableBody>
-                            {isEvents ? (
-                                events.map((event: EventMap) => (
-                                    <TableRow
-                                        key={event.id}
-                                        className="border-b dark:border-gray-800 light:hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                    Add New Event
+                                </Button>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardBody className="p-0">
+                        <Table aria-label="Events table" className="min-w-full">
+                            <TableHeader>
+                                {columns.map((column) => (
+                                    <TableColumn
+                                        key={column.uid}
+                                        className="light:bg-gray-100 text-gray-800 dark:text-white font-medium px-6 py-3"
                                     >
-                                        <TableCell className="px-6 py-4">
-                                            <div className="font-medium light:text-gray-900 dark:text-gray-100">
-                                                {event.name}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4">
-                                            {new Date(
-                                                event.eventDate
-                                            ).toLocaleDateString()}
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4">
-                                            <Chip
-                                                color={
-                                                    statusColorMap[
-                                                        event.category
-                                                    ] || "default"
-                                                }
-                                                size="sm"
-                                                variant="flat"
-                                            >
-                                                {event.category}
-                                            </Chip>
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4">
-                                            ${event.price}
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4">
-                                            <div className="flex gap-3">
-                                                <Tooltip content="View Details">
-                                                    <Button
-                                                        isIconOnly
-                                                        size="sm"
-                                                        variant="light"
-                                                        className="text-blue-500"
-                                                        onPress={() =>
-                                                            showEventDetails(
-                                                                event
-                                                            )
-                                                        }
-                                                    >
-                                                        <BsEye className="h-4 w-4" />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip content="Edit Event">
-                                                    <Button
-                                                        isIconOnly
-                                                        size="sm"
-                                                        variant="light"
-                                                        className="text-green-500"
-                                                        onPress={() =>
-                                                            router.push(
-                                                                `/update-event/${event.id}`
-                                                            )
-                                                        }
-                                                    >
-                                                        <BsPencilSquare className="h-4 w-4" />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip content="Delete Event">
-                                                    <Button
-                                                        isIconOnly
-                                                        size="sm"
-                                                        variant="light"
-                                                        className="text-red-500"
-                                                        onPress={() =>
-                                                            confirmDelete(
-                                                                event.id
-                                                            )
-                                                        }
-                                                    >
-                                                        <BsFillTrash3Fill className="h-4 w-4" />
-                                                    </Button>
-                                                </Tooltip>
+                                        {column.name}
+                                    </TableColumn>
+                                ))}
+                            </TableHeader>
+                            <TableBody>
+                                {isEvents ? (
+                                    events.map((event: EventMap) => (
+                                        <TableRow
+                                            key={event.id}
+                                            className="border-b dark:border-gray-800 light:hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                        >
+                                            <TableCell className="px-6 py-4">
+                                                <div className="font-medium light:text-gray-900 dark:text-gray-100">
+                                                    {event.name}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="px-6 py-4">
+                                                {new Date(
+                                                    event.eventDate
+                                                ).toLocaleDateString()}
+                                            </TableCell>
+                                            <TableCell className="px-6 py-4">
+                                                <Chip
+                                                    color={
+                                                        statusColorMap[
+                                                            event.category
+                                                        ] || "default"
+                                                    }
+                                                    size="sm"
+                                                    variant="flat"
+                                                >
+                                                    {event.category}
+                                                </Chip>
+                                            </TableCell>
+                                            <TableCell className="px-6 py-4">
+                                                ${event.price}
+                                            </TableCell>
+                                            <TableCell className="px-6 py-4">
+                                                <div className="flex gap-3">
+                                                    <Tooltip content="View Details">
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            variant="light"
+                                                            className="text-blue-500"
+                                                            onPress={() =>
+                                                                showEventDetails(
+                                                                    event
+                                                                )
+                                                            }
+                                                        >
+                                                            <BsEye className="h-4 w-4" />
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip content="Edit Event">
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            variant="light"
+                                                            className="text-green-500"
+                                                            onPress={() =>
+                                                                router.push(
+                                                                    `/update-event/${event.id}`
+                                                                )
+                                                            }
+                                                        >
+                                                            <BsPencilSquare className="h-4 w-4" />
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip content="Delete Event">
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            variant="light"
+                                                            className="text-red-500"
+                                                            onPress={() =>
+                                                                confirmDelete(
+                                                                    event.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <BsFillTrash3Fill className="h-4 w-4" />
+                                                        </Button>
+                                                    </Tooltip>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={5}
+                                            className="text-center py-12"
+                                        >
+                                            <div className="flex flex-col items-center justify-center text-gray-500">
+                                                <BsFilterSquare className="h-12 w-12 mb-4" />
+                                                <p className="text-lg">
+                                                    No events found
+                                                </p>
+                                                <p className="text-sm">
+                                                    Try adjusting your filters
+                                                    or adding new events
+                                                </p>
                                             </div>
                                         </TableCell>
                                     </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell
-                                        colSpan={5}
-                                        className="text-center py-12"
-                                    >
-                                        <div className="flex flex-col items-center justify-center text-gray-500">
-                                            <BsFilterSquare className="h-12 w-12 mb-4" />
-                                            <p className="text-lg">
-                                                No events found
-                                            </p>
-                                            <p className="text-sm">
-                                                Try adjusting your filters or
-                                                adding new events
-                                            </p>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </CardBody>
-                {isEvents && (
-                    <div className="flex flex-col items-center px-6 py-4 light:bg-white border-t light:border-gray-200 dark:border-gray-800">
-                        <Pagination
-                            total={totalPages}
-                            initialPage={currentPage}
-                            onChange={handlePageChange}
-                            color="secondary"
-                            variant="bordered"
-                            classNames={{
-                                item: "text-violet-800 hover:bg-violet-100",
-                                cursor: "bg-violet-800 text-white",
-                            }}
-                            size="md"
-                        />
-                        <div className="text-center mt-4 text-sm text-gray-500">
-                            Showing {events.length} of {totalItems} events
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardBody>
+                    {isEvents && (
+                        <div className="flex flex-col items-center px-6 py-4 light:bg-white border-t light:border-gray-200 dark:border-gray-800">
+                            <Pagination
+                                total={totalPages}
+                                initialPage={currentPage}
+                                onChange={handlePageChange}
+                                color="secondary"
+                                variant="bordered"
+                                classNames={{
+                                    item: "text-violet-800 hover:bg-violet-100",
+                                    cursor: "bg-violet-800 text-white",
+                                }}
+                                size="md"
+                            />
+                            <div className="text-center mt-4 text-sm text-gray-500">
+                                Showing {events.length} of {totalItems} events
+                            </div>
                         </div>
-                    </div>
-                )}
-            </Card>
+                    )}
+                </Card>
 
-            {/* Delete Confirmation Modal */}
-            <DeleteModal
-                isOpen={isDeleteModalOpen}
-                onClose={onCloseDeleteModal}
-                onDelete={handleDeleteEvent}
-            />
-
-            {/* Event Details Modal */}
-            {selectedEvent && (
-                <ModelDetails
-                    isOpen={isDetailsModalOpen}
-                    onClose={onCloseDetailsModal}
-                    event={selectedEvent}
+                {/* Delete Confirmation Modal */}
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={onCloseDeleteModal}
+                    onDelete={handleDeleteEvent}
                 />
-            )}
-        </div>
+
+                {/* Event Details Modal */}
+                {selectedEvent && (
+                    <ModelDetails
+                        isOpen={isDetailsModalOpen}
+                        onClose={onCloseDetailsModal}
+                        event={selectedEvent}
+                    />
+                )}
+            </div>
+        </ProtectedRoute>
     );
 }

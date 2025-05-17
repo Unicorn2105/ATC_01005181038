@@ -3,7 +3,6 @@ import EventRepository from "../repository/eventRepository";
 
 const seedEvents = async () => {
     await AppDataSource.initialize();
-
     const events = [
         {
             name: "Modern Art Exhibition",
@@ -13,17 +12,6 @@ const seedEvents = async () => {
             venue: "Cairo Art Gallery",
             price: 50,
             imageUrl: "uploads/art2.jpg",
-            isActive: true,
-        },
-        {
-            name: "Visual Arts Showcase",
-            description: "A gallery of visual storytelling and design.",
-            category: "Art",
-            eventDate: new Date("2025-07-05"),
-            venue: "Zamalek Cultural Center",
-            price: 40,
-            imageUrl: "uploads/art2.jpg",
-            isActive: true,
         },
         {
             name: "Drone Racing Championship",
@@ -33,7 +21,6 @@ const seedEvents = async () => {
             venue: "Giza Arena",
             price: 100,
             imageUrl: "uploads/drone.jpg",
-            isActive: true,
         },
         {
             name: "Frontend Dev Conference",
@@ -43,7 +30,6 @@ const seedEvents = async () => {
             venue: "Smart Village, Cairo",
             price: 120,
             imageUrl: "uploads/frontend.jpg",
-            isActive: true,
         },
         {
             name: "Health & Wellness Fair",
@@ -53,39 +39,15 @@ const seedEvents = async () => {
             venue: "October Sports Club",
             price: 60,
             imageUrl: "uploads/health.jpg",
-            isActive: true,
         },
         {
-            name: "Healthy Living Expo",
-            description:
-                "Explore new trends in diet, health tech, and mental health.",
-            category: "Health",
-            eventDate: new Date("2025-07-15"),
-            venue: "Maadi Wellness Center",
-            price: 70,
-            imageUrl: "uploads/health2.png",
-            isActive: true,
-        },
-        {
-            name: "AI Research Journal Forum",
-            description: "Discuss latest AI research and publications.",
+            name: "Journal Club",
+            description: "Enhance your skills by joining our journal club.",
             category: "Education",
             eventDate: new Date("2025-08-10"),
-            venue: "Faculty of Computers and Information, Cairo University",
+            venue: "Zayed",
             price: 80,
             imageUrl: "uploads/journal.jpg",
-            isActive: true,
-        },
-        {
-            name: "Scientific Publishing Workshop",
-            description:
-                "Improve your research writing and journal submission skills.",
-            category: "Education",
-            eventDate: new Date("2025-09-05"),
-            venue: "AUC New Cairo",
-            price: 65,
-            imageUrl: "uploads/journal2.jpeg",
-            isActive: true,
         },
         {
             name: "Software Testing Bootcamp",
@@ -95,7 +57,6 @@ const seedEvents = async () => {
             venue: "ITI Smart Village",
             price: 90,
             imageUrl: "uploads/testing.jpeg",
-            isActive: true,
         },
     ];
     await EventRepository.insert(events);

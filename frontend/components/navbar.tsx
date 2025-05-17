@@ -44,12 +44,6 @@ export const Navbar = () => {
                         className="flex justify-start items-center gap-1"
                         href="/"
                     >
-                        <Image
-                            src="/logo.png"
-                            alt="Workshoply Logo"
-                            width={40}
-                            height={40}
-                        />
                         <p className="font-bold text-inherit">Workshoply</p>
                     </NextLink>
                 </NavbarBrand>

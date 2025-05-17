@@ -19,10 +19,7 @@ const getAllEvents: RequestHandler = asyncHandler(
             req.query.order?.toString().toUpperCase() === "DESC"
                 ? "DESC"
                 : "ASC";
-        let eventsQuery = EventRepository.createQueryBuilder("event").where(
-            "event.isActive = :isActive",
-            { isActive: true }
-        );
+        let eventsQuery = EventRepository.createQueryBuilder("event");
         if (category) {
             eventsQuery = eventsQuery.andWhere("event.category = :category", {
                 category,
