@@ -61,7 +61,10 @@ docker-compose up --build
 ```
 
 This will start both the backend and a PostgreSQL database.
-
+#### Command for seeding 
+```bash
+docker-compose exec app npx ts-node src/seeds/event-seeder.ts
+```
 ### API Endpoints
 
 -   Auth: `/api/auth`
