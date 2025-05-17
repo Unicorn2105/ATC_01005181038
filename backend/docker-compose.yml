@@ -6,11 +6,11 @@ services:
         ports:
             - "8000:8000"
         environment:
-            - DB_HOST=pg-4fb0207-shahhdsalahh-1ce9.f.aivencloud.com
-            - DB_PORT=10160
-            - DB_USERNAME=avnadmin
-            - DB_PASSWORD=AVNS_lo-0tMncMuQ-yMY-KLB
-            - DB_NAME=defaultdb
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_USERNAME=postgres
+            - DB_PASSWORD=1234
+            - DB_NAME=db-name
             - JWT_SECRET=FaaRHalqyd9mQ+Fie3AhqrigJub3OJimeXrIpPR0LE0=
             - JWT_EXPIRATION=1d
             - CORS_ORIGIN=http://localhost:3000
